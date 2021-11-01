@@ -11,17 +11,15 @@ const options = yargs
   .example('AutoBuild --action build --path /path/to/root/project --user whatsappUserId')
   .example('AutoBuild --action listContacts --contactName filterListByContactName')
   .alias('a', 'action')
-  .describe('a', 'define which action to do')
   .alias('p', 'path')
-  .describe('p', 'Root directory path')
   .alias('u', 'user')
-  .describe('u', 'Whatsapp userId')
   .alias('c', 'contactName')
-  .describe('c', 'Contact name to filter list')
-  .option("action", { alias: "action", type: "string", demandOption: true })
-  .option("path", { alias: "path", type: "string", demandOption: false })
-  .option("user", { alias: "user", type: "string", demandOption: false })
-  .option("contactName", { alias: "contactName", type: "string", demandOption: false })
+  .alias('b', 'branch')
+  .option("action", { alias: "action", type: "string", describe: 'Define which action to do', demandOption: true })
+  .option("path", { alias: "path", type: "string", describe: 'Root directory path', demandOption: false })
+  .option("user", { alias: "user", type: "string", describe: 'Whatsapp userId', demandOption: false })
+  .option("contactName", { alias: "contactName", describe: 'Contact name to filter list', type: "string", demandOption: false })
+  .option("branch", { alias: "branch", type: "string", describe: 'Define which branch to build', demandOption: false })
   .epilog(`Muriel Gasparini - https://github.com/Muriel-Gasparini`)
   .argv;
 
@@ -61,6 +59,11 @@ async function listContacts() {
 async function buildAndSend() {
   try {
     const botInstance = await venom.create()
+
+    console.log("UPDATING BRANCH PLEASE AWAIT...")
+    const updateBranch = await exec(`cd ${options.path} && git fetch && git checkout ${options.branch} && git pull origin ${options.branch}`)
+    console.log(updateBranch.stdout)
+
     console.log("INITIALING BUILD PLEASE AWAIT...")
     const execBuildCommand = await exec(`cd ${options.path} && cd android && "./gradlew" assembleRelease`)
 
