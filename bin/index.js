@@ -58,11 +58,15 @@ async function listContacts() {
 
 async function buildAndSend() {
   try {
-    const botInstance = await venom.create()
+    const botInstance = await venom.create({
+      createPathFileToken: __dirname
+    })
 
-    console.log("UPDATING BRANCH PLEASE AWAIT...")
-    const updateBranch = await exec(`cd ${options.path} && git fetch && git checkout ${options.branch} && git pull origin ${options.branch}`)
-    console.log(updateBranch.stdout)
+    if (options.branch) {
+      console.log("UPDATING BRANCH PLEASE AWAIT...")
+      const updateBranch = await exec(`cd ${options.path} && git fetch && git checkout ${options.branch} && git pull origin ${options.branch}`)
+      console.log(updateBranch.stdout)
+    }
 
     console.log("INITIALING BUILD PLEASE AWAIT...")
     const execBuildCommand = await exec(`cd ${options.path} && cd android && "./gradlew" assembleRelease`)
