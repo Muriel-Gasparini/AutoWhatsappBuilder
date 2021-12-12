@@ -1,5 +1,5 @@
 {
-  "name": "auto-whatsapp-builder",
+  "name": "auto-builder",
   "version": "1.0.0",
   "description": "Build an React Native artefact and send it with Whatsapp",
   "main": "bin/index.js",
@@ -9,10 +9,12 @@
   "author": "Muriel Gasparini",
   "license": "ISC",
   "bin": {
-    "AutoBuild": "./bin/index.js"
+    "AutoBuilder": "./bin/index.js"
   },
   "dependencies": {
-    "venom-bot": "^3.1.12",
+    "child-process-promise": "^2.2.1",
+    "cli-table": "^0.3.11",
+    "venom-bot": "^4.0.3",
     "yargs": "^17.2.1"
   }
 }
